@@ -3,12 +3,15 @@ package org.example;
 import java.time.Duration;
 import java.time.Instant;
 
-public class TimeExecutionDecorator implements TimeExecution{
+public class TimeExecutionDecorator implements TimeExecution {
 
     TimeExecution timeExecution;
+    String taskName;
 
-    TimeExecutionDecorator(TimeExecution timeExecution){
+    // Constructor now accepts a task name
+    TimeExecutionDecorator(TimeExecution timeExecution, String taskName) {
         this.timeExecution = timeExecution;
+        this.taskName = taskName;
     }
 
     @Override
@@ -16,11 +19,14 @@ public class TimeExecutionDecorator implements TimeExecution{
         Instant start = Instant.now();
         Object objet = timeExecution.Execute();
         Instant end = Instant.now();
-        Duration duration = Duration.between(start,end);
-        Long hours = duration.toHours();
-        Long minutes = duration.toMinutes() % 60;
-        Long secondes = duration.getSeconds() % 60;
-        System.out.println("Temps d'execution: "+ hours+ " heures, "+minutes+", minutes "+secondes+" secondes");
+        
+        // Calculate the duration
+        Duration duration = Duration.between(start, end);
+
+        // Display the duration in milliseconds
+        long milliseconds = duration.toMillis();  // Total duration in milliseconds
+        System.out.println(taskName + " - Temps d'execution: " + milliseconds + " milliseconds");
+
         return objet;
     }
 }
